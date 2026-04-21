@@ -5,7 +5,7 @@ Melodia is a full-stack music application project consisting of a backend API an
 ## 🧱 Project Structure
 
 - `melodia-backend/` - Node.js, Express, TypeScript, MongoDB backend
-- `melodia-frontend/` - frontend client
+- `melodia-frontend/` - Angular, TypeScript frontend client
 
 ## ⚙️ Backend
 
