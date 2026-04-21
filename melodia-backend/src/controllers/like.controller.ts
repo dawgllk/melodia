@@ -1,14 +1,10 @@
 import { Response } from "express";
 import { LikedSong } from "../models/liked-song.model";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
+import { getTrackById } from "../services/spotify.service";
 
 type LikeSongRequestBody = {
     spotifyTrackId?: string;
-    songName?: string;
-    artistName?: string;
-    albumName?: string;
-    imageUrl?: string | null;
-    spotifyUrl?: string;
 };
 
 export const likeSong = async (
@@ -16,7 +12,7 @@ export const likeSong = async (
     res: Response
 ): Promise<void> => {
     try {
-        const { spotifyTrackId, songName, artistName, albumName, imageUrl, spotifyUrl } = req.body;
+        const { spotifyTrackId } = req.body;
         const userId = req.user?.userId;
 
         if (!userId) {
@@ -26,9 +22,9 @@ export const likeSong = async (
             return;
         }
 
-        if (!spotifyTrackId || !songName || !artistName || !albumName || !spotifyUrl) {
+        if (!spotifyTrackId) {
             res.status(400).json({
-                error: "spotifyTrackId, songName, artistName, albumName, and spotifyUrl are required."
+                error: "spotifyTrackId is required."
             });
             return;
         }
@@ -45,14 +41,24 @@ export const likeSong = async (
             return;
         }
 
+        // Fetch track details from Spotify so the backend stays the source of truth
+        const track = await getTrackById(spotifyTrackId);
+
+        if (!track) {
+            res.status(404).json({
+                error: "Track not found on Spotify."
+            });
+            return;
+        }
+
         const likedSong = await LikedSong.create({
             userId,
-            spotifyTrackId,
-            songName,
-            artistName,
-            albumName,
-            imageUrl: imageUrl ?? null,
-            spotifyUrl
+            spotifyTrackId: track.spotifyTrackId,
+            songName: track.songName,
+            artistName: track.artistName,
+            albumName: track.albumName,
+            imageUrl: track.imageUrl,
+            spotifyUrl: track.spotifyUrl
         });
 
         res.status(201).json({

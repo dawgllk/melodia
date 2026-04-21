@@ -96,3 +96,33 @@ export const searchTracks = async (query: string) => {
         spotifyUrl: track.external_urls.spotify
     }));
 };
+
+export const getTrackById = async (spotifyTrackId: string) => {
+    const accessToken = await getSpotifyAccessToken();
+
+    const response = await fetch(`https://api.spotify.com/v1/tracks/${spotifyTrackId}`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    });
+
+    if (response.status === 404) {
+        return null;
+    }
+
+    if (!response.ok) {
+        throw new Error(`Spotify track lookup error: ${response.status} ${response.statusText}`);
+    }
+
+    const track = (await response.json()) as SpotifyTrack;
+
+    return {
+        spotifyTrackId: track.id,
+        songName: track.name,
+        artistName: track.artists.map((artist) => artist.name).join(", "),
+        albumName: track.album.name,
+        imageUrl: track.album.images[0]?.url ?? null,
+        spotifyUrl: track.external_urls.spotify
+    };
+};
