@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model";
+import {AuthenticatedRequest} from "../middleware/auth.middleware";
 
 type RegisterRequestBody = {
     username?: string;
@@ -175,6 +176,40 @@ export const loginUser = async (
     } catch (error) {
         // Log unexpected login errors for debugging
         console.error("Login error:", error);
+
+        res.status(500).json({
+            error: "Internal server error."
+        });
+    }
+};
+
+export const getCurrentUser = async (
+    req: AuthenticatedRequest,
+    res: Response
+): Promise<void> => {
+    try {
+        if (!req.user) {
+            res.status(401).json({
+                error: "Unauthorized."
+            });
+            return;
+        }
+
+        const user = await User.findById(req.user.userId).select("-passwordHash");
+
+        if (!user) {
+            res.status(404).json({
+                error: "User not found."
+            });
+            return;
+        }
+
+        res.status(200).json({
+            user
+        });
+    } catch (error) {
+        // Log unexpected errors during current user lookup
+        console.error("Error in getCurrentUser controller:", error);
 
         res.status(500).json({
             error: "Internal server error."
