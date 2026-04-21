@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+    getLikedSongStatus,
     getLikedSongs,
     likeSong,
     unlikeSong
@@ -8,8 +9,9 @@ import { authenticateToken } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.post("/likes", authenticateToken, likeSong);
+router.get("/likes/:spotifyTrackId/status", authenticateToken, getLikedSongStatus);
 router.get("/likes", authenticateToken, getLikedSongs);
+router.post("/likes", authenticateToken, likeSong);
 router.delete("/likes/:spotifyTrackId", authenticateToken, unlikeSong);
 
 export default router;
