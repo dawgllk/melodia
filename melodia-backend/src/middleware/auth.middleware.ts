@@ -6,7 +6,12 @@ type JwtPayload = {
     email: string;
 };
 
-export interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest<
+    Params = {},
+    ResBody = any,
+    ReqBody = any,
+    ReqQuery = any
+> extends Request<Params, ResBody, ReqBody, ReqQuery> {
     user?: JwtPayload;
 }
 

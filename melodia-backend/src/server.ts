@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import searchRoutes from "./routes/search.routes";
 import authRoutes from "./routes/auth.routes";
+import likeRoutes from "./routes/like.routes";
 import { connectToDatabase } from "./config/db";
 
 // Load environment variables from .env file
@@ -11,10 +12,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enable CORS for cross-origin requests
-app.use(cors());
 
-// Parse incoming JSON requests
+app.use(cors());
 app.use(express.json());
 
 // Basic health check route
@@ -25,8 +24,8 @@ app.get("/", (_req, res) => {
 // Register API routes
 app.use("/api", searchRoutes);
 app.use("/api", authRoutes);
+app.use("/api", likeRoutes);
 
-// Initialize database connection and start server
 const startServer = async (): Promise<void> => {
     await connectToDatabase();
 
@@ -35,7 +34,6 @@ const startServer = async (): Promise<void> => {
     });
 };
 
-// Handle startup errors
 startServer().catch((error) => {
     console.error("Failed to start server:", error);
 });
