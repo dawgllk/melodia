@@ -143,3 +143,36 @@ export const unlikeSong = async (
         });
     }
 };
+
+export const getLikedSongStatus = async (
+    req: AuthenticatedRequest<{ spotifyTrackId: string }>,
+    res: Response
+): Promise<void> => {
+    try {
+        const userId = req.user?.userId;
+        const { spotifyTrackId } = req.params;
+
+        if (!userId) {
+            res.status(401).json({
+                error: "Unauthorized."
+            });
+            return;
+        }
+
+        const likedSong = await LikedSong.findOne({
+            userId,
+            spotifyTrackId
+        });
+
+        res.status(200).json({
+            isLiked: Boolean(likedSong)
+        });
+    } catch (error) {
+        // Log unexpected errors during liked song status lookup
+        console.error("Error in getLikedSongStatus controller:", error);
+
+        res.status(500).json({
+            error: "Internal server error."
+        });
+    }
+};
