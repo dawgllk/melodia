@@ -1,0 +1,36 @@
+<div class="search-page">
+  <h1>Melodia</h1>
+  <p>Search for songs using the Spotify API.</p>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="query"
+      placeholder="Search for a song or artist"
+      (keyup.enter)="onSearch()"
+    />
+    <button (click)="onSearch()">Search</button>
+  </div>
+
+  <p *ngIf="isLoading">Loading...</p>
+  <p *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="results" *ngIf="tracks.length > 0">
+    <div class="track-card" *ngFor="let track of tracks">
+      <img
+        *ngIf="track.imageUrl"
+        [src]="track.imageUrl"
+        [alt]="track.name"
+      />
+
+      <div class="track-info">
+        <h3>{{ track.name }}</h3>
+        <p>{{ track.artists }}</p>
+        <p>{{ track.album }}</p>
+        <a [href]="track.spotifyUrl" target="_blank" rel="noopener noreferrer">
+          Open on Spotify
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
