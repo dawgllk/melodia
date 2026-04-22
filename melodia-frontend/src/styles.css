@@ -12,11 +12,18 @@
   --accent-alt: #8b5cf6;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   background: var(--bg-main);
   font-family: Inter, Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 p,
