@@ -1,59 +1,148 @@
-# MelodiaFrontend
+# 🎵 Melodia – Music Discovery App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+Melodia is a fullstack web application that allows users to search for songs via the Spotify API, manage their favorite tracks, and interact with a clean, modern UI.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Features (Frontend)
 
-```bash
-ng serve
-```
+### 🔍 Search System
+- Search for songs and artists using the Spotify API
+- Clean and responsive search UI
+- Displays:
+  - Song name
+  - Artist(s)
+  - Album
+  - Cover image
+- Direct link to Spotify
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### 🧠 Smart UI States
+The search page handles all important states:
 
-## Code scaffolding
+- 🟢 **Initial State**
+  - “Start by searching for a song or artist”
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- 🔄 **Loading State**
+  - Animated spinner while fetching data
 
-```bash
-ng generate component component-name
-```
+- ❌ **No Results State**
+  - “No results found for 'xyz'”
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- ✅ **Results State**
+  - “Showing results for 'xyz'”
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+### ❤️ Like System (UI Ready)
+- Like button implemented per track
+- Ready for backend integration
+- Clean hover effects and interaction design
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+### 🔐 Authentication System
+- Login with email & password
+- JWT token handling
+- User data stored globally (AuthService + localStorage)
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+### 👤 Dynamic Header
+- Adapts based on authentication state
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+#### Not logged in:
+- Sign In
+- Create Account
 
-```bash
-ng test
-```
+#### Logged in:
+- Profile button
+- Interactive dropdown:
+  - Go to Profile (placeholder)
+  - Logout
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+### 🧩 Dropdown UX
+- Toggle dropdown on click
+- Arrow indicator (▲ / ▼)
+- Closes when clicking outside
+- Smooth and intuitive behavior
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 🎨 UI / UX Design
+- Dark theme with custom color palette
+- Consistent typography (Inter font)
+- Responsive layout
+- Clean card-based design for tracks
+- Subtle hover animations
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🏗️ Tech Stack
+
+- **Angular (Standalone Components)**
+- TypeScript
+- RxJS
+- CSS (custom styling, no framework)
+- Spotify API (via backend)
+
+---
+
+## 🔮 Future Improvements
+
+### ❤️ Like System (Backend Integration)
+- Persist liked songs in database
+- Toggle like/unlike
+- Display liked songs page
+
+---
+
+### 👤 Profile Page
+- User information display
+- Saved songs overview
+- Account settings
+
+---
+
+### 🔐 Auth Improvements
+- Register UI
+- Token validation on app start
+- Auto login via stored token
+- HTTP Interceptor for auth headers
+
+---
+
+### ⚡ UX Enhancements
+- Toast notifications (instead of alerts)
+- Better loading animations
+- Infinite scroll / pagination for search
+- Keyboard navigation
+
+---
+
+### 🎵 Advanced Features
+- Music previews (play snippets)
+- Recommendations based on likes
+- Recently searched songs
+
+---
+
+## 💡 Notes
+
+This project focuses on:
+- Clean UI/UX design
+- Real-world app structure
+- Fullstack-ready architecture
+
+---
+
+## 📸 Preview
+
+*Screenshots will be added soon 👀*
+
+---
+
+## ✨ Author
+
+Filip Nogacki

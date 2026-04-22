@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-homepage',
@@ -7,21 +6,5 @@ import { Router } from '@angular/router';
   styleUrl: './homepage.component.css',
 })
 export class HomepageComponent {
-  private router = inject(Router);
 
-  onClickLogin(): void {
-    this.router.navigate(['/login']);
-  }
-
-  onClickRegister(): void {
-    this.router.navigate(['/register']);
-  }
-
-  onClickLikedSongs(): void {
-    this.router.navigate(['/likes']);
-  }
-
-  onClickSearch(): void {
-    this.router.navigate(['/search']);
-  }
 }

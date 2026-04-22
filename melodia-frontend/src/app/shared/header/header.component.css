@@ -23,6 +23,8 @@
 .app-header__logo {
   width: 2.2rem;
   height: 2.2rem;
+  cursor:pointer;
+  transition: transform 0.15s ease;
 }
 
 .app-header__title {
@@ -32,6 +34,8 @@
   font-weight: 700;
   font-family: Inter, Arial, sans-serif;
   letter-spacing: 0.01em;
+  cursor:pointer;
+  transition: transform 0.15s ease;
 }
 
 .app-header__actions {
@@ -96,4 +100,48 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.profile-dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 110%;
+  background: var(--bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.dropdown-menu button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.dropdown-menu button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.dropdown-arrow {
+  margin-left: 0.3rem;
+  font-size: 0.95rem;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.app-header__button.open .dropdown-arrow {
+  transform: rotate(180deg);
 }

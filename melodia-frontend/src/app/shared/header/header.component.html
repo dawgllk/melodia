@@ -1,0 +1,39 @@
+<header class="app-header">
+  <nav class="app-header__nav">
+    <div class="app-header__brand">
+      <img (click)="onClickHomepage()" class="app-header__logo app-header__logo--spin" src="icon_white.png" alt="Melodia logo">
+      <h1 (click)="onClickHomepage()" class="app-header__title">Melodia</h1>
+    </div>
+
+    <div class="app-header__actions">
+
+      <!-- Only show if not Signed In -->
+      <ng-container *ngIf="!isLoggedIn(); else loggedInBlock">
+        <button class="app-header__button" (click)="onClickLogin()">SIGN IN</button>
+        <button class="app-header__button" (click)="onClickRegister()">CREATE ACCOUNT</button>
+      </ng-container>
+
+      <!-- Only show when Signed In -->
+      <ng-template #loggedInBlock>
+        <div class="profile-dropdown">
+          <button
+            class="app-header__button"
+            [class.open]="isDropdownOpen"
+            (click)="toggleDropdown()">
+            YOUR PROFILE
+            <span class="dropdown-arrow">▾</span>
+          </button>
+
+          <div class="dropdown-menu" *ngIf="isDropdownOpen">
+            <button (click)="onClickProfile()">Go to Profile</button>
+            <button (click)="onLogout()">Logout</button>
+          </div>
+        </div>
+      </ng-template>
+
+      <button class="app-header__button" (click)="onClickLikedSongs()">LIKED SONGS</button>
+      <button class="app-header__button" (click)="onClickSearch()">SEARCH</button>
+
+    </div>
+  </nav>
+</header>

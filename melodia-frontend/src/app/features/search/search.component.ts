@@ -15,8 +15,10 @@ export class SearchComponent {
   private searchService = inject(SearchService);
 
   query = '';
+  lastQuery = '';
   tracks: Track[] = [];
   isLoading = false;
+  hasSearched = false;
   errorMessage = '';
 
   onSearch(): void {
@@ -24,12 +26,15 @@ export class SearchComponent {
 
     if (!trimmedQuery) {
       this.tracks = [];
+      this.hasSearched = false;
       this.errorMessage = 'Please enter a search term.';
       return;
     }
 
     this.isLoading = true;
+    this.hasSearched = true;
     this.errorMessage = '';
+    this.lastQuery = trimmedQuery;
 
     this.searchService.searchTracks(trimmedQuery).subscribe({
       next: (response) => {
@@ -42,5 +47,9 @@ export class SearchComponent {
         this.isLoading = false;
       },
     });
+  }
+
+  onLikeClick(track: Track): void {
+    console.log('Like clicked:', track.name);
   }
 }

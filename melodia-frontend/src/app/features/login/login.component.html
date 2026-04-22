@@ -1,1 +1,34 @@
-<p>login works!</p>
+<div class="login-page">
+  <div class="login-form" *ngIf="!isLoggedIn">
+    <h1>Sign In</h1>
+    <input
+      type="email"
+      [(ngModel)]="email"
+      placeholder="Email"
+      (keyup.enter)="onLogin()"
+    />
+
+    <input
+      type="password"
+      [(ngModel)]="password"
+      placeholder="Password"
+      (keyup.enter)="onLogin()"
+    />
+
+    <button (click)="onLogin()" [disabled]="isLoading">
+      {{ isLoading ? 'Signing in...' : 'Sign In' }}
+    </button>
+
+    <p class="" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <div class="success-message" *ngIf="isLoggedIn">
+    <p>{{ welcomeMessage }}</p>
+
+    <p class="redirect-text">
+      You will be redirected in {{ countdown }} seconds.
+      If it doesn’t work,
+      <button class="link-button" (click)="onClickHomepage()">click here</button>
+    </p>
+  </div>
+</div>

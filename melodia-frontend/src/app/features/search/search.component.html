@@ -1,36 +1,75 @@
-
 <div class="search-page">
-  <h1>Melodia</h1>
-  <p>Search for songs using the Spotify API.</p>
+  <div class="search-page__intro">
+    <h1 class="search-page__title">Search</h1>
+    <p class="search-page__subtitle">
+      Search for songs using the Spotify API.
+    </p>
+  </div>
 
   <div class="search-bar">
     <input
+      class="search-bar__input"
       type="text"
       [(ngModel)]="query"
       placeholder="Search for a song or artist"
       (keyup.enter)="onSearch()"
     />
-    <button (click)="onSearch()">Search</button>
+    <button class="search-bar__button" (click)="onSearch()">Search</button>
   </div>
 
-  <p *ngIf="isLoading">Loading...</p>
-  <p *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="search-page__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="search-state" *ngIf="!hasSearched && !isLoading">
+    <p class="search-state__text">Start by searching for a song or artist.</p>
+  </div>
+
+  <div class="search-state" *ngIf="isLoading">
+    <div class="search-state__spinner"></div>
+    <p class="search-state__text">Loading results...</p>
+  </div>
+
+  <div class="search-state" *ngIf="hasSearched && !isLoading && tracks.length === 0 && !errorMessage">
+    <p class="search-state__text">
+      No results found for "{{ lastQuery }}".
+    </p>
+  </div>
+
+  <p class="search-results-info" *ngIf="tracks.length > 0">
+    Showing results for "{{ lastQuery }}"
+  </p>
 
   <div class="results" *ngIf="tracks.length > 0">
     <div class="track-card" *ngFor="let track of tracks">
-      <img
-        *ngIf="track.imageUrl"
-        [src]="track.imageUrl"
-        [alt]="track.name"
-      />
+      <div class="track-card__image-wrapper">
+        <img
+          class="track-card__image"
+          *ngIf="track.imageUrl"
+          [src]="track.imageUrl"
+          [alt]="track.name"
+        />
+      </div>
 
-      <div class="track-info">
-        <h3>{{ track.name }}</h3>
-        <p>{{ track.artists }}</p>
-        <p>{{ track.album }}</p>
-        <a [href]="track.spotifyUrl" target="_blank" rel="noopener noreferrer">
-          Open on Spotify
-        </a>
+      <div class="track-card__content">
+        <div class="track-card__text">
+          <h3 class="track-card__title">{{ track.name }}</h3>
+          <p class="track-card__artist">{{ track.artists }}</p>
+          <p class="track-card__album">{{ track.album }}</p>
+        </div>
+
+        <div class="track-card__actions">
+          <a
+            class="track-card__link"
+            [href]="track.spotifyUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open on Spotify
+          </a>
+
+          <button class="track-card__like-button" (click)="onLikeClick(track)">
+            Like
+          </button>
+        </div>
       </div>
     </div>
   </div>
