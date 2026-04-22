@@ -21,7 +21,16 @@ See the backend README for more details:
 
 ## 💻 Frontend
 
-The frontend will contain the user interface for interacting with the Melodia API.
+The frontend includes:
+
+- Spotify-powered song search UI
+- Authentication system with JWT handling
+- Dynamic header with user state & dropdown
+- Responsive design with clean UI states
+
+See the frontend README for more details:
+
+`melodia-frontend/README.md`
 
 ## 📝 Notes
 
