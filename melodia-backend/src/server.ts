@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import searchRoutes from "./routes/search.routes";
 import authRoutes from "./routes/auth.routes";
 import likeRoutes from "./routes/like.routes";
+import discoverRoutes from "./routes/discover.routes";
 import { connectToDatabase } from "./config/db";
 
 // Load environment variables from .env file
@@ -25,6 +26,7 @@ app.get("/", (_req, res) => {
 app.use("/api", searchRoutes);
 app.use("/api", authRoutes);
 app.use("/api", likeRoutes);
+app.use("/api", discoverRoutes);
 
 const startServer = async (): Promise<void> => {
     await connectToDatabase();

@@ -35,7 +35,12 @@ type SpotifySearchResponse = {
     };
 };
 
-// Request a new access token using Spotify's Client Credentials Flow
+type SpotifyPlaylistItemsResponse = {
+    items: {
+        track: SpotifyTrack | null;
+    }[];
+};
+
 const getSpotifyAccessToken = async (): Promise<string> => {
     const clientId = process.env.SPOTIFY_CLIENT_ID;
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
@@ -125,4 +130,44 @@ export const getTrackById = async (spotifyTrackId: string) => {
         imageUrl: track.album.images[0]?.url ?? null,
         spotifyUrl: track.external_urls.spotify
     };
+};
+
+export const getPlaylistTracks = async (playlistId: string) => {
+    const accessToken = await getSpotifyAccessToken();
+
+    const params = new URLSearchParams({
+        limit: "10",
+        offset: "0"
+    });
+
+    const response = await fetch(
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks?${params.toString()}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(`Spotify playlist error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = (await response.json()) as SpotifyPlaylistItemsResponse;
+
+    return data.items
+        .filter((item) => item.track !== null)
+        .map((item) => {
+            const track = item.track as SpotifyTrack;
+
+            return {
+                id: track.id,
+                name: track.name,
+                artists: track.artists.map((artist) => artist.name).join(", "),
+                album: track.album.name,
+                imageUrl: track.album.images[0]?.url ?? null,
+                spotifyUrl: track.external_urls.spotify
+            };
+        });
 };
