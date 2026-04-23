@@ -7,13 +7,19 @@ type LoginRequest = {
   password: string;
 };
 
+type RegisterRequest = {
+  username: string;
+  email: string;
+  password: string;
+};
+
 export type AuthUser = {
   id: string;
   username: string;
   email: string;
 };
 
-type LoginResponse = {
+type AuthResponse = {
   message: string;
   token: string;
   user: AuthUser;
@@ -28,8 +34,17 @@ export class AuthService {
   private tokenKey = 'melodia_token';
   private userKey = 'melodia_user';
 
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials).pipe(
+  login(credentials: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials).pipe(
+      tap((response) => {
+        localStorage.setItem(this.tokenKey, response.token);
+        localStorage.setItem(this.userKey, JSON.stringify(response.user));
+      }),
+    );
+  }
+
+  register(credentials: RegisterRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, credentials).pipe(
       tap((response) => {
         localStorage.setItem(this.tokenKey, response.token);
         localStorage.setItem(this.userKey, JSON.stringify(response.user));

@@ -23,7 +23,6 @@ html, body {
   padding: 0;
   background: var(--bg-main);
   font-family: Inter, Arial, sans-serif;
-  overflow-x: hidden;
 }
 
 p,

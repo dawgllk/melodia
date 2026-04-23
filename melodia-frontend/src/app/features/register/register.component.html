@@ -1,1 +1,48 @@
-<p>register.component works!</p>
+<div class="register-page">
+
+  <div class="register-form" *ngIf="!isRegistered">
+    <input
+      type="text"
+      [(ngModel)]="username"
+      placeholder="Username"
+      (keyup.enter)="onRegister()"
+    />
+
+    <input
+      type="email"
+      [(ngModel)]="email"
+      placeholder="Email"
+      (keyup.enter)="onRegister()"
+    />
+
+    <input
+      type="password"
+      [(ngModel)]="password"
+      placeholder="Password"
+      (keyup.enter)="onRegister()"
+    />
+
+    <input
+      type="password"
+      [(ngModel)]="confirmPassword"
+      placeholder="Confirm Password"
+      (keyup.enter)="onRegister()"
+    />
+
+    <button (click)="onRegister()" [disabled]="isLoading">
+      {{ isLoading ? 'Creating account...' : 'Create Account' }}
+    </button>
+
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="isRegistered">
+    <p class="success-message">{{ successMessage }}</p>
+
+    <p class="redirect-text">
+      You will be redirected in {{ countdown }} seconds.
+      If it doesn't work,
+      <button class="link-button" (click)="onClickHomepage()">click here</button>
+    </p>
+  </div>
+</div>

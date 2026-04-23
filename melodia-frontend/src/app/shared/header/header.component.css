@@ -1,8 +1,9 @@
 .app-header {
-  width: 100vw;
+  width: 100%;
   margin: 0;
   background: var(--bg-secondary);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: visible;
 }
 
 .app-header__nav {
@@ -108,7 +109,8 @@
 
 .dropdown-menu {
   position: absolute;
-  top: 110%;
+  top: calc(100% + 0.4rem);
+  right: 0;
   background: var(--bg-secondary);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
@@ -144,4 +146,10 @@
 
 .app-header__button.open .dropdown-arrow {
   transform: rotate(180deg);
+}
+
+.app-header__nav,
+.app-header__actions,
+.profile-dropdown {
+  overflow: visible;
 }
