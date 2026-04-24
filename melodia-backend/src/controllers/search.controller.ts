@@ -1,6 +1,16 @@
 import { Request, Response } from "express";
 import { searchTracks } from "../services/spotify.service";
 
+/**
+ * Searches for songs using a query string.
+ *
+ * Validates the query parameter, delegates the search to the Spotify service,
+ * and returns matching tracks to the client.
+ *
+ * @param req Express request containing query parameter `q`.
+ * @param res Express response containing search results or an error.
+ * @returns Promise resolving to void.
+ */
 export const searchSongs = async (req: Request, res: Response): Promise<void> => {
     try {
         const query = req.query.q;

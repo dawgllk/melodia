@@ -3,10 +3,24 @@ import { LikedSong } from "../models/liked-song.model";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
 import { getTrackById } from "../services/spotify.service";
 
+/**
+ * Request body expected when liking a song.
+ */
 type LikeSongRequestBody = {
+    /** Spotify track ID of the song to like */
     spotifyTrackId?: string;
 };
 
+/**
+ * Creates a new liked song entry for the authenticated user.
+ *
+ * Validates the request, ensures the song is not already liked,
+ * fetches track details from Spotify, and stores the result in the database.
+ *
+ * @param req Authenticated request containing user info and track ID.
+ * @param res Express response used to return the created liked song or an error.
+ * @returns Promise resolving to void.
+ */
 export const likeSong = async (
     req: AuthenticatedRequest<{}, {}, LikeSongRequestBody>,
     res: Response
@@ -75,6 +89,15 @@ export const likeSong = async (
     }
 };
 
+/**
+ * Retrieves all liked songs for the authenticated user.
+ *
+ * Returns the list sorted by creation date (most recent first).
+ *
+ * @param req Authenticated request containing user info.
+ * @param res Express response containing liked songs or an error.
+ * @returns Promise resolving to void.
+ */
 export const getLikedSongs = async (
     req: AuthenticatedRequest,
     res: Response
@@ -104,6 +127,15 @@ export const getLikedSongs = async (
     }
 };
 
+/**
+ * Removes a liked song for the authenticated user.
+ *
+ * Deletes the like entry matching the user and track ID.
+ *
+ * @param req Authenticated request containing user info and track ID as route param.
+ * @param res Express response confirming deletion or returning an error.
+ * @returns Promise resolving to void.
+ */
 export const unlikeSong = async (
     req: AuthenticatedRequest<{ spotifyTrackId: string }>,
     res: Response
@@ -144,6 +176,13 @@ export const unlikeSong = async (
     }
 };
 
+/**
+ * Checks whether a specific track is liked by the authenticated user.
+ *
+ * @param req Authenticated request containing user info and track ID as route param.
+ * @param res Express response containing like status or an error.
+ * @returns Promise resolving to void.
+ */
 export const getLikedSongStatus = async (
     req: AuthenticatedRequest<{ spotifyTrackId: string }>,
     res: Response

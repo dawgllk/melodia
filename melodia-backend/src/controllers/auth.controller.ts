@@ -2,19 +2,44 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model";
-import {AuthenticatedRequest} from "../middleware/auth.middleware";
+import { AuthenticatedRequest } from "../middleware/auth.middleware";
 
+/**
+ * Request body expected when registering a new user.
+ */
 type RegisterRequestBody = {
+    /** Username chosen by the user. */
     username?: string;
+
+    /** Email address used for registration. */
     email?: string;
+
+    /** Plain text password provided by the user. */
     password?: string;
 };
 
+/**
+ * Request body expected when logging in an existing user.
+ */
 type LoginRequestBody = {
+    /** Email address used for login. */
     email?: string;
+
+    /** Plain text password provided by the user. */
     password?: string;
 };
 
+/**
+ * Registers a new user account.
+ *
+ * Validates the request body, checks whether the email already exists,
+ * hashes the password, creates the user in the database, and returns
+ * a signed JWT together with basic user information.
+ *
+ * @param req Express request containing username, email, and password.
+ * @param res Express response used to return the created user or an error.
+ * @returns Promise resolving to void.
+ */
 export const registerUser = async (
     req: Request<{}, {}, RegisterRequestBody>,
     res: Response
@@ -105,6 +130,17 @@ export const registerUser = async (
     }
 };
 
+/**
+ * Logs in an existing user.
+ *
+ * Validates the request body, searches for the user by email,
+ * compares the submitted password with the stored password hash,
+ * and returns a signed JWT on successful authentication.
+ *
+ * @param req Express request containing email and password.
+ * @param res Express response used to return authentication data or an error.
+ * @returns Promise resolving to void.
+ */
 export const loginUser = async (
     req: Request<{}, {}, LoginRequestBody>,
     res: Response
@@ -151,7 +187,6 @@ export const loginUser = async (
             return;
         }
 
-
         // Issue a new token after successful authentication
         const token = jwt.sign(
             {
@@ -183,6 +218,17 @@ export const loginUser = async (
     }
 };
 
+/**
+ * Retrieves the currently authenticated user.
+ *
+ * Uses the user information attached by the authentication middleware,
+ * loads the matching user from the database, excludes the password hash,
+ * and returns the user data.
+ *
+ * @param req Authenticated Express request containing decoded user data.
+ * @param res Express response used to return the current user or an error.
+ * @returns Promise resolving to void.
+ */
 export const getCurrentUser = async (
     req: AuthenticatedRequest,
     res: Response
