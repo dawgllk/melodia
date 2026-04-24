@@ -4,6 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../core/services/search.service';
 import { Track } from '../../models/track.model';
 
+/**
+ * Component responsible for handling track search functionality.
+ *
+ * Allows users to enter a query, fetch matching tracks from the backend,
+ * and display results while managing loading and error states.
+ */
 @Component({
   selector: 'app-search',
   standalone: true,
@@ -12,15 +18,49 @@ import { Track } from '../../models/track.model';
   styleUrl: './search.component.css',
 })
 export class SearchComponent {
+  /**
+   * Service used to perform search requests to the backend API.
+   */
   private searchService = inject(SearchService);
 
+  /**
+   * Current search query entered by the user.
+   */
   query = '';
+
+  /**
+   * Stores the last successfully executed search query.
+   */
   lastQuery = '';
+
+  /**
+   * List of tracks returned from the search request.
+   */
   tracks: Track[] = [];
+
+  /**
+   * Indicates whether a search request is currently in progress.
+   */
   isLoading = false;
+
+  /**
+   * Indicates whether a search has been performed.
+   */
   hasSearched = false;
+
+  /**
+   * Stores error messages displayed to the user.
+   */
   errorMessage = '';
 
+  /**
+   * Handles the search action triggered by the user.
+   *
+   * Validates the query input, sends a request to the SearchService,
+   * and updates the UI state including loading, results, and error handling.
+   *
+   * @returns void
+   */
   onSearch(): void {
     const trimmedQuery = this.query.trim();
 
@@ -49,6 +89,15 @@ export class SearchComponent {
     });
   }
 
+  /**
+   * Handles the "like" action for a specific track.
+   *
+   * Currently logs the track name to the console. Can be extended
+   * to integrate with a favorites or playlist feature.
+   *
+   * @param track The track that was liked by the user.
+   * @returns void
+   */
   onLikeClick(track: Track): void {
     console.log('Like clicked:', track.name);
   }

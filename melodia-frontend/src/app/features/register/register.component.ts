@@ -5,6 +5,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { count } from 'rxjs';
 
+/**
+ * Component responsible for handling user registration.
+ *
+ * Provides a registration form, validates user input, communicates
+ * with AuthService, and redirects the user after successful registration.
+ */
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -13,20 +19,70 @@ import { count } from 'rxjs';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  /**
+   * Authentication service used to perform registration requests.
+   */
   private authService = inject(AuthService);
+
+  /**
+   * Angular router used for navigation after registration.
+   */
   private router = inject(Router);
+
+  /**
+   * Countdown in seconds before redirecting after successful registration.
+   */
   countdown = 4;
 
+  /**
+   * Username input entered by the user.
+   */
   username = '';
+
+  /**
+   * Email input entered by the user.
+   */
   email = '';
+
+  /**
+   * Password input entered by the user.
+   */
   password = '';
+
+  /**
+   * Confirmation password input used to validate password equality.
+   */
   confirmPassword = '';
 
+  /**
+   * Indicates whether a registration request is currently in progress.
+   */
   isLoading = false;
+
+  /**
+   * Stores error messages displayed to the user.
+   */
   errorMessage = '';
+
+  /**
+   * Stores success messages displayed after successful registration.
+   */
   successMessage = '';
+
+  /**
+   * Indicates whether the user has successfully registered.
+   */
   isRegistered = false;
 
+  /**
+   * Handles the registration form submission.
+   *
+   * Validates required fields and password confirmation, sends the
+   * registration request via AuthService, updates UI state, and starts
+   * a countdown before redirecting to the homepage.
+   *
+   * @returns void
+   */
   onRegister(): void {
     const username = this.username.trim();
     const email = this.email.trim();
@@ -72,9 +128,20 @@ export class RegisterComponent {
     });
   }
 
+  /**
+   * Navigates the user back to the homepage.
+   *
+   * @returns void
+   */
   onClickHomepage() {
     this.router.navigate(['/']);
   }
 
+  /**
+   * Readonly reference to the RxJS count operator.
+   *
+   * This allows the imported count symbol to be exposed to the template
+   * if needed.
+   */
   protected readonly count = count;
 }
