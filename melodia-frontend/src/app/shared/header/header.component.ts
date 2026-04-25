@@ -81,7 +81,7 @@ export class HeaderComponent {
    */
   onLogout(): void {
     this.authService.logout();
-    this.router.navigate(['/homepage']);
+    this.router.navigate(['/']);
     this.isDropdownOpen = false;
   }
 

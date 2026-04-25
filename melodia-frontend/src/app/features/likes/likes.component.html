@@ -1,1 +1,50 @@
-<p>likes.component works!</p>
+<div class="liked-page">
+  <div class="liked-page__intro">
+    <h1>Liked Songs</h1>
+    <p>Your saved tracks in one place.</p>
+  </div>
+
+  <div class="liked-state" *ngIf="isLoading">
+    <div class="liked-state__spinner"></div>
+    <p>Loading liked songs...</p>
+  </div>
+
+  <p class="liked-page__error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="liked-state" *ngIf="!isLoading && likedSongs.length === 0 && !errorMessage">
+    <p>You have not liked any songs yet.</p>
+  </div>
+
+  <div class="liked-list" *ngIf="likedSongs.length > 0">
+    <div class="liked-card" *ngFor="let song of likedSongs">
+      <img
+        class="liked-card__image"
+        *ngIf="song.imageUrl"
+        [src]="song.imageUrl"
+        [alt]="song.songName"
+      />
+
+      <div class="liked-card__content">
+        <div>
+          <h3>{{ song.songName }}</h3>
+          <p>{{ song.artistName }}</p>
+          <p class="liked-card__album">{{ song.albumName }}</p>
+        </div>
+
+        <div class="liked-card__actions">
+          <a
+            [href]="song.spotifyUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open on Spotify
+          </a>
+
+          <button (click)="onUnlike(song.spotifyTrackId)">
+            Unlike
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

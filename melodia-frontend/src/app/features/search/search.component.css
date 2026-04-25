@@ -194,18 +194,13 @@
 .track-card__like-button {
   background: transparent;
   border: none;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 0.55rem 0.8rem;
   cursor: pointer;
-  border-radius: 6px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 1.3rem;
+  transition: transform 0.15s ease;
 }
 
 .track-card__like-button:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
+  transform: scale(1.2);
 }
 
 .track-card__like-button:focus,

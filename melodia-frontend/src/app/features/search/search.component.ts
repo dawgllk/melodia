@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../core/services/search.service';
 import { Track } from '../../models/track.model';
+import { LikeService } from '../../core/services/like.service';
 
 /**
  * Component responsible for handling track search functionality.
@@ -22,6 +23,10 @@ export class SearchComponent {
    * Service used to perform search requests to the backend API.
    */
   private searchService = inject(SearchService);
+  /**
+   * Service used to perform like requests to the backend API.
+   */
+  private likeService = inject(LikeService);
 
   /**
    * Current search query entered by the user.
@@ -52,6 +57,11 @@ export class SearchComponent {
    * Stores error messages displayed to the user.
    */
   errorMessage = '';
+
+  /**
+   * Set containing IDs of liked tracks for fast lookup.
+   */
+  likedTrackIds = new Set<string>();
 
   /**
    * Handles the search action triggered by the user.
@@ -90,15 +100,42 @@ export class SearchComponent {
   }
 
   /**
-   * Handles the "like" action for a specific track.
+   * Toggles the like state of a given track.
    *
-   * Currently logs the track name to the console. Can be extended
-   * to integrate with a favorites or playlist feature.
+   * If the track is already liked, it will be removed.
+   * Otherwise, it will be added to the user's liked tracks.
    *
-   * @param track The track that was liked by the user.
-   * @returns void
+   * @param track - The track to like or unlike.
    */
-  onLikeClick(track: Track): void {
-    console.log('Like clicked:', track.name);
+  onToggleLike(track: Track): void {
+    if (this.isTrackLiked(track.id)) {
+      this.likeService.unlikeTrack(track.id).subscribe({
+        next: () => {
+          this.likedTrackIds.delete(track.id);
+        },
+        error: (err) => {
+          console.error('Unlike failed:', err);
+        },
+      });
+    } else {
+      this.likeService.likeTrack(track.id).subscribe({
+        next: () => {
+          this.likedTrackIds.add(track.id);
+        },
+        error: (err) => {
+          console.error('Like failed:', err);
+        },
+      });
+    }
+  }
+
+  /**
+   * Checks whether a track is currently liked by the user.
+   *
+   * @param trackId - The unique identifier of the track.
+   * @returns True if the track is liked, otherwise false.
+   */
+  isTrackLiked(trackId: string): boolean {
+    return this.likedTrackIds.has(trackId);
   }
 }

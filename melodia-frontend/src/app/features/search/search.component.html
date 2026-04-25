@@ -66,8 +66,10 @@
             Open on Spotify
           </a>
 
-          <button class="track-card__like-button" (click)="onLikeClick(track)">
-            Like
+          <button
+            class="track-card__like-button"
+            (click)="onToggleLike(track)">
+            {{ isTrackLiked(track.id) ? '💚' : '🤍' }}
           </button>
         </div>
       </div>

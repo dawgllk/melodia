@@ -33,8 +33,8 @@ The search page handles all important states:
 
 ---
 
-### ❤️ Like System (UI Ready)
-- Like button implemented per track
+### ❤️ LikeService System (UI Ready)
+- LikeService button implemented per track
 - Ready for backend integration
 - Clean hover effects and interaction design
 
@@ -91,7 +91,7 @@ The search page handles all important states:
 
 ## 🔮 Future Improvements
 
-### ❤️ Like System (Backend Integration)
+### ❤️ LikeService System (Backend Integration)
 - Persist liked songs in database
 - Toggle like/unlike
 - Display liked songs page
