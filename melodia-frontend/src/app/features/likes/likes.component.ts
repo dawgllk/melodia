@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LikeService } from '../../core/services/like.service';
-import { LikedSong } from '../../models/liked-song.model';
+import { LikedSong } from '../../models/liked-track.model';
 
 /**
  * Component responsible for displaying and managing the user's liked songs.

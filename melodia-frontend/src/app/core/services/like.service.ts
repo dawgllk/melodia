@@ -1,8 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LikedSong } from '../../models/liked-song.model';
+import { LikedSong } from '../../models/liked-track.model';
 
+/**
+ * Represents the response structure returned by the backend
+ * when fetching the user's liked songs.
+ *
+ * The response contains an array of liked song objects.
+ */
 type LikedSongsResponse = {
   likedSongs: LikedSong[];
 };
