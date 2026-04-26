@@ -1,37 +1,76 @@
 # 🎵 Melodia
 
-Melodia is a full-stack music application project consisting of a backend API and a frontend client.
+Melodia is a fullstack music application that allows users to discover songs via the Spotify API, manage their favorite tracks, and interact with a modern web interface.
+
+---
 
 ## 🧱 Project Structure
 
-- `melodia-backend/` - Node.js, Express, TypeScript, MongoDB backend
-- `melodia-frontend/` - Angular, TypeScript frontend client
+- `melodia-backend/` – Node.js, Express, TypeScript, MongoDB backend
+- `melodia-frontend/` – Angular, TypeScript frontend client
+
+---
+
+## 🚀 Features Overview
+
+- 🔍 Search songs via Spotify API
+- 🔐 User authentication (JWT-based login & register)
+- ❤️ Like & manage favorite songs (persisted in database)
+- 🎧 Spotify integration for music discovery
+- 🎨 Responsive UI with dynamic state handling
+
+---
 
 ## ⚙️ Backend
 
-The backend includes:
+The backend provides:
 
-- Spotify song search
-- User registration and login with JWT
-- MongoDB integration with Mongoose
+- Spotify API integration (search & track data)
+- JWT-based authentication system
+- Persistent storage of liked songs
+- REST API with clean architecture (routes, controllers, services)
 
 See the backend README for more details:
 
 `melodia-backend/README.md`
 
+---
+
 ## 💻 Frontend
 
-The frontend includes:
+The frontend provides:
 
-- Spotify-powered song search UI
-- Authentication system with JWT handling
-- Dynamic header with user state & dropdown
-- Responsive design with clean UI states
+- Angular-based UI with standalone components
+- Search interface with multiple UI states
+- Authentication system with global user state
+- Like system with real-time UI updates
+- Dynamic header with dropdown navigation
+- Homepage with Spotify playlist embeds
 
 See the frontend README for more details:
 
 `melodia-frontend/README.md`
 
+---
+
+## 🧠 Architecture
+
+Melodia follows a clear separation between frontend and backend:
+
+- **Frontend** handles UI, user interaction, and state management
+- **Backend** handles authentication, data persistence, and API communication
+
+Communication is handled via REST APIs with JSON-based data exchange.
+
+---
+
 ## 📝 Notes
 
-This repository is structured as a multi-part project, with frontend and backend separated into their own folders.
+- This project demonstrates a fullstack architecture using modern web technologies
+- Focus on clean structure, scalability, and real-world application design
+
+---
+
+## ✨ Author
+
+Filip Nogacki
