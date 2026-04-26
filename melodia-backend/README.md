@@ -1,13 +1,19 @@
-# Melodia Backend
+# 🎵 Melodia Backend
 
-Melodia Backend is a Node.js and TypeScript REST API for searching songs via the Spotify API, managing users with JWT authentication, and storing user-specific liked songs with MongoDB.
+Melodia Backend is a Node.js and TypeScript REST API for handling music search, user authentication, and persistent liked songs using the Spotify API and MongoDB.
+
+---
 
 ## 🚀 Features
 
-- Search for songs using the Spotify API
-- User registration and login (JWT)
-- MongoDB integration with Mongoose
-- Clean route/controller/service architecture
+- 🔍 Search songs via the Spotify API
+- 🔐 User registration and login with JWT authentication
+- ❤️ Like and unlike songs (persisted in database)
+- 📄 Retrieve user-specific liked songs
+- 🗄️ MongoDB integration with Mongoose
+- 🧩 Clean architecture (routes, controllers, services)
+
+---
 
 ## 🛠 Tech Stack
 
@@ -18,6 +24,8 @@ Melodia Backend is a Node.js and TypeScript REST API for searching songs via the
 - JWT (jsonwebtoken)
 - bcryptjs
 - Spotify Web API
+
+---
 
 ## ⚙️ Setup
 
@@ -41,17 +49,25 @@ Server will run on:
 
     http://localhost:3000
 
-## API Endpoints
+---
+
+## 📡 API Endpoints
 
 ### Health Check
 
     GET /
 
-### Search Songs
+---
+
+### 🔍 Search Songs
 
     GET /api/search?q=drake
 
-### Register
+---
+
+### 🔐 Authentication
+
+#### Register
 
     POST /api/auth/register
 
@@ -63,7 +79,7 @@ Body:
       "password": "secret123"
     }
 
-### Login
+#### Login
 
     POST /api/auth/login
 
@@ -74,17 +90,61 @@ Body:
       "password": "secret123"
     }
 
+---
+
+### ❤️ Likes
+
+#### Like a song
+
+    POST /api/likes
+
+Body:
+
+    {
+      "spotifyTrackId": "track_id"
+    }
+
+#### Get liked songs
+
+    GET /api/likes
+
+#### Unlike a song
+
+    DELETE /api/likes/:spotifyTrackId
+
+---
+
+## 🎧 Spotify Integration
+
+- Uses the Spotify Web API with Client Credentials Flow
+- Implements song search and track data mapping
+
+> ⚠️ Note:  
+> An attempt was made to fetch Spotify chart playlists (e.g. Top 50 Global) via the playlist endpoints.  
+> However, access was restricted (403 Forbidden) when using the Client Credentials Flow,  
+> so this feature was not integrated into the frontend.
+
+---
+
 ## 📝 Notes
 
 - Spotify credentials are required for the API to work
 - MongoDB must be running locally
-- Passwords are hashed using bcrypt
-- JWT is used for authentication
+- Passwords are securely hashed using bcrypt
+- JWT is used for authentication and protected routes
+
+---
 
 ## 🔮 Future Improvements
 
-- Protected routes (JWT middleware)
-- Like/unlike songs
-- Better error handling
-- Input validation
-- Frontend integration
+- Input validation (e.g. Zod / Joi)
+- Improved error handling
+- Token refresh / session handling
+- User profile endpoints
+- Advanced Spotify features (recommendations, previews)
+
+---
+
+## ✨ Author
+
+Filip Nogacki
