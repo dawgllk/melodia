@@ -1,14 +1,13 @@
 # 🎵 Melodia – Music Discovery App
 
-Melodia is a fullstack web application that allows users to search for songs via the Spotify API, manage their favorite tracks, and interact with a clean, modern UI.
+Melodia is a fullstack web application that allows users to discover music via the Spotify API, manage their favorite tracks, and interact with a modern, responsive UI.
 
 ---
 
-## 🚀 Features (Frontend)
+## 🚀 Features
 
 ### 🔍 Search System
 - Search for songs and artists using the Spotify API
-- Clean and responsive search UI
 - Displays:
   - Song name
   - Artist(s)
@@ -16,66 +15,61 @@ Melodia is a fullstack web application that allows users to search for songs via
   - Cover image
 - Direct link to Spotify
 
-### 🧠 Smart UI States
+---
+
+### 🧠 UI States
 The search page handles all important states:
 
-- 🟢 **Initial State**
-  - “Start by searching for a song or artist”
-
-- 🔄 **Loading State**
-  - Animated spinner while fetching data
-
-- ❌ **No Results State**
-  - “No results found for 'xyz'”
-
-- ✅ **Results State**
-  - “Showing results for 'xyz'”
+- 🟢 Initial state (“Start searching for a song or artist”)
+- 🔄 Loading state (spinner)
+- ❌ No results state
+- ✅ Results state with dynamic feedback
 
 ---
 
-### ❤️ LikeService System (UI Ready)
-- LikeService button implemented per track
-- Ready for backend integration
-- Clean hover effects and interaction design
+### ❤️ Like System
+- Like and unlike songs
+- Persistent storage via backend
+- Instant UI updates (toggle state)
+- Dedicated **Liked Songs page**
 
 ---
 
-### 🔐 Authentication System
-- Login with email & password
-- JWT token handling
-- User data stored globally (AuthService + localStorage)
+### 🔐 Authentication
+- Register & Login with email and password
+- JWT-based authentication
+- Global user state management (AuthService + localStorage)
+- Automatic token handling via HTTP Interceptor
 
 ---
 
 ### 👤 Dynamic Header
-- Adapts based on authentication state
+Adapts based on authentication state:
 
-#### Not logged in:
-- Sign In
-- Create Account
-
-#### Logged in:
-- Profile button
-- Interactive dropdown:
-  - Go to Profile (placeholder)
-  - Logout
+- Not logged in:
+  - Sign In
+  - Create Account
+- Logged in:
+  - Profile dropdown
+  - Logout functionality
 
 ---
 
-### 🧩 Dropdown UX
-- Toggle dropdown on click
-- Arrow indicator (▲ / ▼)
-- Closes when clicking outside
-- Smooth and intuitive behavior
+### 🎵 Homepage
+- Spotify chart playlists embedded:
+  - Global Top 50
+  - Austria Top 50
+  - Discover Weekly
+  - Release Radar
+- Responsive grid layout
 
 ---
 
-### 🎨 UI / UX Design
-- Dark theme with custom color palette
-- Consistent typography (Inter font)
+### 🎨 UI / UX
+- Dark theme with consistent design system
 - Responsive layout
-- Clean card-based design for tracks
-- Subtle hover animations
+- Clean card-based components
+- Subtle hover and interaction effects
 
 ---
 
@@ -84,56 +78,40 @@ The search page handles all important states:
 - **Angular (Standalone Components)**
 - TypeScript
 - RxJS
-- CSS (custom styling, no framework)
-- Spotify API (via backend)
+- Node.js / Express (Backend)
+- MongoDB
+- REST APIs
+- JWT Authentication
+- Spotify API
 
 ---
 
 ## 🔮 Future Improvements
 
-### ❤️ LikeService System (Backend Integration)
-- Persist liked songs in database
-- Toggle like/unlike
-- Display liked songs page
-
----
-
 ### 👤 Profile Page
-- User information display
-- Saved songs overview
+- User overview
+- Saved songs
 - Account settings
 
----
-
-### 🔐 Auth Improvements
-- Register UI
-- Token validation on app start
-- Auto login via stored token
-- HTTP Interceptor for auth headers
-
----
-
 ### ⚡ UX Enhancements
-- Toast notifications (instead of alerts)
-- Better loading animations
-- Infinite scroll / pagination for search
-- Keyboard navigation
-
----
+- Toast notifications
+- Infinite scroll / pagination
+- Improved loading states
 
 ### 🎵 Advanced Features
-- Music previews (play snippets)
+- Music previews
 - Recommendations based on likes
-- Recently searched songs
+- Recently played / searched tracks
 
 ---
 
 ## 💡 Notes
 
-This project focuses on:
-- Clean UI/UX design
-- Real-world app structure
-- Fullstack-ready architecture
+This project demonstrates:
+- Fullstack architecture
+- API integration (Spotify)
+- Authentication & state management
+- Clean and scalable frontend structure
 
 ---
 
