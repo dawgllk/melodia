@@ -1,1 +1,29 @@
-<p>profile works!</p>
+<section class="profile-page">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar">
+        {{ avatarLetter }}
+      </div>
+
+      <div>
+        <h1>{{ user?.username || 'Profile' }}</h1>
+        <p>{{ user?.email || 'Connect your Spotify account' }}</p>
+      </div>
+    </div>
+
+    <div class="spotify-section">
+      <div>
+        <h2>Spotify</h2>
+        <p>Connect your Spotify account to use personalized music features.</p>
+      </div>
+
+      <button class="spotify-btn" (click)="connectSpotify()">
+        Connect Spotify
+      </button>
+    </div>
+
+    <button class="logout-btn" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</section>

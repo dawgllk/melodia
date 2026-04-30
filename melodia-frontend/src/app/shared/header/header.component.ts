@@ -91,7 +91,6 @@ export class HeaderComponent {
    * @returns True if the user is logged in, otherwise false.
    */
   isLoggedIn(): boolean {
-    console.log(this.authService.isLoggedIn());
     return this.authService.isLoggedIn();
   }
 
