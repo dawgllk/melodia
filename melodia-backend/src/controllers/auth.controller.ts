@@ -241,7 +241,9 @@ export const getCurrentUser = async (
             return;
         }
 
-        const user = await User.findById(req.user.userId).select("-passwordHash");
+        const user = await User.findById(req.user.userId).select(
+            "-passwordHash -spotifyAccessToken -spotifyRefreshToken"
+        );
 
         if (!user) {
             res.status(404).json({

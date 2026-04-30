@@ -5,6 +5,7 @@ import searchRoutes from "./routes/search.routes";
 import authRoutes from "./routes/auth.routes";
 import likeRoutes from "./routes/like.routes";
 import discoverRoutes from "./routes/discover.routes";
+import spotifyAuthRoutes from "./routes/spotifyAuth.routes";
 import { connectToDatabase } from "./config/db";
 
 /**
@@ -52,6 +53,7 @@ app.use("/api", searchRoutes);
 app.use("/api", authRoutes);
 app.use("/api", likeRoutes);
 app.use("/api", discoverRoutes);
+app.use("/api", spotifyAuthRoutes);
 
 /**
  * Starts the Express server.
