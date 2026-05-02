@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 /**
  * Represents the payload sent to the backend for user login.
@@ -67,7 +68,7 @@ export class AuthService {
   /**
    * Base URL of the backend API.
    */
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
 
   /**
    * LocalStorage key used to store the authentication token.

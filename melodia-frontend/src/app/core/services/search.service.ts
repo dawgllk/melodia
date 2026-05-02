@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Track } from '../../models/track.model';
+import { environment } from '../../../environments/environment';
 
 /**
  * Represents the response returned from the search endpoint.
@@ -30,7 +31,7 @@ export class SearchService {
   /**
    * Base URL of the backend API.
    */
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
 
   /**
    * Sends a search request to the backend to retrieve tracks

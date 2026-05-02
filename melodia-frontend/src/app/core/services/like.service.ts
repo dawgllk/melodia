@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LikedSong } from '../../models/liked-track.model';
+import { environment } from '../../../environments/environment';
 
 /**
  * Represents the response structure returned by the backend
@@ -36,7 +37,7 @@ export class LikeService {
   /**
    * Base API URL for backend communication.
    */
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
 
   /**
    * Sends a request to like a specific track by its Spotify track ID.
