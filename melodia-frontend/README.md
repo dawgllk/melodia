@@ -43,6 +43,16 @@ The search page handles all important states:
 
 ---
 
+### Spotify Connection
+- Connect a logged-in user account to Spotify from the profile page
+- Display the current Spotify connection status
+- Show "Connect Spotify" when no Spotify account is connected
+- Show "Spotify connected" when the connection is active
+- Disconnect Spotify from the profile page
+- Keep Spotify access and refresh tokens on the backend only
+
+---
+
 ### 👤 Dynamic Header
 Adapts based on authentication state:
 
@@ -90,7 +100,8 @@ Adapts based on authentication state:
 
 ### 👤 Profile Page
 - User overview
-- Saved songs
+- Spotify connection status
+- Spotify connect and disconnect actions
 - Account settings
 
 ### ⚡ UX Enhancements
@@ -111,6 +122,7 @@ This project demonstrates:
 - Fullstack architecture
 - API integration (Spotify)
 - Authentication & state management
+- Per-user Spotify connection state
 - Clean and scalable frontend structure
 
 ---
