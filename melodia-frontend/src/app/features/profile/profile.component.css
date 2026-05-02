@@ -119,6 +119,16 @@
   color: #b3b3b3;
 }
 
+.spotify-status.connected {
+  color: #1ed760;
+  font-weight: 700;
+}
+
+.spotify-error {
+  margin-top: 8px !important;
+  color: #ff8f8f !important;
+}
+
 .spotify-btn {
   border: none;
   border-radius: 999px;
@@ -134,6 +144,22 @@
 .spotify-btn:hover {
   background: #1ed760;
   transform: translateY(-2px);
+}
+
+.spotify-btn.disconnect {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #1db954;
+}
+
+.spotify-btn.disconnect:hover {
+  background: rgba(29, 185, 84, 0.16);
+}
+
+.spotify-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
 }
 
 .logout-btn {

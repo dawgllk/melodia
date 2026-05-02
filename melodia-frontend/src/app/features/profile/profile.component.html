@@ -14,11 +14,31 @@
     <div class="spotify-section">
       <div>
         <h2>Spotify</h2>
-        <p>Connect your Spotify account to use personalized music features.</p>
+        <p *ngIf="spotifyStatusLoading">Checking Spotify connection...</p>
+        <p *ngIf="!spotifyStatusLoading && !spotifyConnected">
+          Connect your Spotify account to use personalized music features.
+        </p>
+        <p *ngIf="!spotifyStatusLoading && spotifyConnected" class="spotify-status connected">
+          Spotify connected
+        </p>
+        <p *ngIf="spotifyError" class="spotify-error">{{ spotifyError }}</p>
       </div>
 
-      <button class="spotify-btn" (click)="connectSpotify()">
+      <button
+        *ngIf="!spotifyStatusLoading && !spotifyConnected"
+        class="spotify-btn"
+        (click)="connectSpotify()"
+      >
         Connect Spotify
+      </button>
+
+      <button
+        *ngIf="!spotifyStatusLoading && spotifyConnected"
+        class="spotify-btn disconnect"
+        (click)="disconnectSpotify()"
+        [disabled]="spotifyDisconnecting"
+      >
+        {{ spotifyDisconnecting ? 'Disconnecting...' : 'Disconnect Spotify' }}
       </button>
     </div>
 
