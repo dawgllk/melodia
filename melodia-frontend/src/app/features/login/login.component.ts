@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   /**
    * Authentication service used to perform login requests.
    */
@@ -62,6 +62,7 @@ export class LoginComponent {
    * Countdown in seconds before redirecting after successful login.
    */
   countdown = 4;
+  private redirectIntervalId: ReturnType<typeof setInterval> | null = null;
 
   /**
    * Handles the login form submission.
@@ -94,11 +95,13 @@ export class LoginComponent {
           this.isLoggedIn = true;
           this.isLoading = false;
 
-          const interval = setInterval(() => {
+          this.clearRedirectTimer();
+
+          this.redirectIntervalId = setInterval(() => {
             this.countdown--;
 
             if (this.countdown === 0) {
-              clearInterval(interval);
+              this.clearRedirectTimer();
               this.router.navigate(['/']);
             }
           }, 1000);
@@ -116,7 +119,19 @@ export class LoginComponent {
    *
    * @returns void
    */
-  onClickHomepage() {
+  onClickHomepage(): void {
+    this.clearRedirectTimer();
     this.router.navigate(['/']);
+  }
+
+  ngOnDestroy(): void {
+    this.clearRedirectTimer();
+  }
+
+  private clearRedirectTimer(): void {
+    if (this.redirectIntervalId) {
+      clearInterval(this.redirectIntervalId);
+      this.redirectIntervalId = null;
+    }
   }
 }

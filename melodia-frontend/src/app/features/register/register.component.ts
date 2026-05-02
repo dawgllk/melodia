@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,7 +18,7 @@ import { count } from 'rxjs';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   /**
    * Authentication service used to perform registration requests.
    */
@@ -33,6 +33,7 @@ export class RegisterComponent {
    * Countdown in seconds before redirecting after successful registration.
    */
   countdown = 4;
+  private redirectIntervalId: ReturnType<typeof setInterval> | null = null;
 
   /**
    * Username input entered by the user.
@@ -110,11 +111,13 @@ export class RegisterComponent {
         this.isRegistered = true;
         this.isLoading = false;
 
-        const interval = setInterval(() => {
+        this.clearRedirectTimer();
+
+        this.redirectIntervalId = setInterval(() => {
           this.countdown--;
 
           if (this.countdown === 0) {
-            clearInterval(interval);
+            this.clearRedirectTimer();
             this.router.navigate(['/']);
           }
         }, 1000);
@@ -133,8 +136,20 @@ export class RegisterComponent {
    *
    * @returns void
    */
-  onClickHomepage() {
+  onClickHomepage(): void {
+    this.clearRedirectTimer();
     this.router.navigate(['/']);
+  }
+
+  ngOnDestroy(): void {
+    this.clearRedirectTimer();
+  }
+
+  private clearRedirectTimer(): void {
+    if (this.redirectIntervalId) {
+      clearInterval(this.redirectIntervalId);
+      this.redirectIntervalId = null;
+    }
   }
 
   /**
