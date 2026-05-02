@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
 
 export type SpotifyStatusResponse = {
   connected: boolean;
@@ -13,7 +14,7 @@ export type SpotifyStatusResponse = {
 export class SpotifyService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
-  private apiUrl = 'http://localhost:3000/api/spotify';
+  private apiUrl = `${environment.apiUrl}/spotify`;
 
   getStatus(): Observable<SpotifyStatusResponse> {
     return this.http.get<SpotifyStatusResponse>(`${this.apiUrl}/status`);
