@@ -25,7 +25,6 @@ export class SpotifyService {
 
   connect(): void {
     const token = this.authService.getToken();
-    console.log(token);
 
     if (!token) {
       window.location.href = '/login';
