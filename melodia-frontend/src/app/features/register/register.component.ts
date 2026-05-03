@@ -33,6 +33,10 @@ export class RegisterComponent implements OnDestroy {
    * Countdown in seconds before redirecting after successful registration.
    */
   countdown = 4;
+
+  /**
+   * Active redirect countdown interval.
+   */
   private redirectIntervalId: ReturnType<typeof setInterval> | null = null;
 
   /**
@@ -141,10 +145,16 @@ export class RegisterComponent implements OnDestroy {
     this.router.navigate(['/']);
   }
 
+  /**
+   * Clears any active redirect timer when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.clearRedirectTimer();
   }
 
+  /**
+   * Stops the redirect countdown if it is currently running.
+   */
   private clearRedirectTimer(): void {
     if (this.redirectIntervalId) {
       clearInterval(this.redirectIntervalId);
