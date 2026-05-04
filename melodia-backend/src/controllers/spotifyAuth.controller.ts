@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
 import { User } from "../models/user.model";
+import { encryptSpotifyToken } from "../services/spotify-token-encryption.service";
 
 type SpotifyOAuthState = {
     userId: string;
@@ -155,12 +156,12 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
         spotifyRefreshToken?: string;
         spotifyConnectedAt: Date;
     } = {
-        spotifyAccessToken: tokenData.access_token,
+        spotifyAccessToken: encryptSpotifyToken(tokenData.access_token),
         spotifyConnectedAt: new Date()
     };
 
     if (tokenData.refresh_token) {
-        update.spotifyRefreshToken = tokenData.refresh_token;
+        update.spotifyRefreshToken = encryptSpotifyToken(tokenData.refresh_token);
     }
 
     const user = await User.findByIdAndUpdate(spotifyState.userId, update, {

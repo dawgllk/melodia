@@ -43,6 +43,7 @@ npm install
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/melodia
 JWT_SECRET=your_jwt_secret
+SPOTIFY_TOKEN_ENCRYPTION_KEY=64_character_hex_secret
 
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
@@ -52,6 +53,12 @@ FRONTEND_URL=http://localhost:4200
 ```
 
 `SPOTIFY_REDIRECT_URI` must exactly match one of the redirect URIs configured in the Spotify Developer Dashboard. During local development, this is usually an HTTPS tunnel URL such as ngrok.
+
+Generate `JWT_SECRET` and `SPOTIFY_TOKEN_ENCRYPTION_KEY` with:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
 
 ### 3. ▶️ Start Development Server
 
@@ -235,7 +242,7 @@ These endpoints fetch predefined Spotify playlists through the app-level Spotify
 
 ## 🎧 Spotify Account Connection
 
-The Spotify account connection flow stores Spotify access and refresh tokens only in MongoDB. The frontend should never store or receive Spotify tokens.
+The Spotify account connection flow stores encrypted Spotify access and refresh tokens only in MongoDB. The frontend should never store or receive Spotify tokens.
 
 ### 🔗 Start Spotify OAuth
 
@@ -264,7 +271,7 @@ Spotify redirects here after authorization. The backend:
 
 1. Verifies the signed OAuth `state`
 2. Exchanges the Spotify code for tokens
-3. Stores the Spotify access token and refresh token on the logged-in user
+3. Encrypts and stores the Spotify access token and refresh token on the logged-in user
 4. Redirects to:
 
 ```text
@@ -314,7 +321,7 @@ Response:
 ## 📝 Notes
 
 - Spotify app credentials are required for search and discover endpoints.
-- Spotify user OAuth tokens are stored only in the backend database.
+- Spotify user OAuth tokens are encrypted before being stored in the backend database.
 - MongoDB must be running and reachable through `MONGODB_URI`.
 - Passwords are hashed with `bcryptjs`.
 - JWT is used for protected app routes.
@@ -325,7 +332,6 @@ Response:
 ## 🔮 Future Improvements
 
 - Replace Spotify login URL JWT usage with a safer authorization URL endpoint
-- Encrypt stored Spotify OAuth tokens
 - Add Spotify token expiry and refresh handling
 - Add request validation with Zod or Joi
 - Improve centralized error handling
