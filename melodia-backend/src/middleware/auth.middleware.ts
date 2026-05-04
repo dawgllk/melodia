@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env";
 
 /**
  * Payload structure encoded داخل JWT tokens.
@@ -62,19 +63,9 @@ export const authenticateToken = (
     }
 
     const token = authHeader.split(" ")[1];
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-        console.error("JWT_SECRET is missing in environment variables");
-
-        res.status(500).json({
-            error: "Server configuration error."
-        });
-        return;
-    }
 
     try {
-        req.user = jwt.verify(token, jwtSecret) as JwtPayload;
+        req.user = jwt.verify(token, env.jwtSecret) as JwtPayload;
 
         next();
     } catch (error) {

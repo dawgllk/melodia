@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+import { env } from "./config/env";
 import searchRoutes from "./routes/search.routes";
 import authRoutes from "./routes/auth.routes";
 import likeRoutes from "./routes/like.routes";
@@ -9,21 +9,14 @@ import spotifyAuthRoutes from "./routes/spotifyAuth.routes";
 import { connectToDatabase } from "./config/db";
 
 /**
- * Load environment variables from the .env file into process.env.
- */
-dotenv.config();
-
-/**
  * Express application instance.
  */
 const app = express();
 
 /**
  * Port on which the server will run.
- *
- * Falls back to 3000 if not defined in environment variables.
  */
-const PORT = process.env.PORT || 3000;
+const PORT = env.port;
 
 /**
  * Enable Cross-Origin Resource Sharing (CORS).
