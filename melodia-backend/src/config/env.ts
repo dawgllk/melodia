@@ -1,7 +1,13 @@
 import dotenv from "dotenv";
 
+/**
+ * Loads environment variables from the local `.env` file into process.env.
+ */
 dotenv.config();
 
+/**
+ * Environment variables that must be present before the application starts.
+ */
 const requiredEnvVars = [
     "MONGODB_URI",
     "JWT_SECRET",
@@ -12,8 +18,18 @@ const requiredEnvVars = [
     "FRONTEND_URL"
 ] as const;
 
+/**
+ * Union type of all required environment variable names.
+ */
 type RequiredEnvVar = (typeof requiredEnvVars)[number];
 
+/**
+ * Reads a required environment variable and trims surrounding whitespace.
+ *
+ * @param name Name of the required environment variable.
+ * @returns The configured environment variable value.
+ * @throws Error if the variable is missing or empty.
+ */
 const getRequiredEnv = (name: RequiredEnvVar): string => {
     const value = process.env[name]?.trim();
 
@@ -24,6 +40,15 @@ const getRequiredEnv = (name: RequiredEnvVar): string => {
     return value;
 };
 
+/**
+ * Reads and validates the encryption key used for Spotify OAuth tokens.
+ *
+ * AES-256-GCM requires a 32-byte key, represented here as a
+ * 64-character hexadecimal string.
+ *
+ * @returns Validated Spotify token encryption key.
+ * @throws Error if the key is not a 64-character hex string.
+ */
 const getHexEncryptionKey = (): string => {
     const encryptionKey = getRequiredEnv("SPOTIFY_TOKEN_ENCRYPTION_KEY");
 
@@ -34,6 +59,14 @@ const getHexEncryptionKey = (): string => {
     return encryptionKey;
 };
 
+/**
+ * Reads and validates the HTTP port.
+ *
+ * Falls back to 3000 when PORT is not configured.
+ *
+ * @returns Port number used by the Express server.
+ * @throws Error if PORT is configured but is not a positive integer.
+ */
 const getPort = (): number => {
     const rawPort = process.env.PORT?.trim();
 
@@ -50,6 +83,11 @@ const getPort = (): number => {
     return port;
 };
 
+/**
+ * Validated application configuration.
+ *
+ * Import this object instead of reading from process.env directly.
+ */
 export const env = {
     port: getPort(),
     mongoUri: getRequiredEnv("MONGODB_URI"),

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 
 /**
- * Payload structure encoded داخل JWT tokens.
+ * Payload structure encoded inside JWT tokens.
  */
 type JwtPayload = {
     /** Unique identifier of the authenticated user */

@@ -1,17 +1,38 @@
 import crypto from "crypto";
 import { env } from "../config/env";
 
+/**
+ * Authenticated encryption algorithm used for Spotify OAuth tokens.
+ */
 const ALGORITHM = "aes-256-gcm";
+
+/**
+ * Recommended IV length for AES-GCM.
+ */
 const IV_LENGTH_BYTES = 12;
+
+/**
+ * Authentication tag length used to detect tampering.
+ */
 const AUTH_TAG_LENGTH_BYTES = 16;
+
+/**
+ * Version prefix for encrypted token payloads.
+ */
 const TOKEN_FORMAT_VERSION = "v1";
 
+/**
+ * Binary encryption key derived from the validated hex environment variable.
+ */
 const encryptionKey = Buffer.from(env.spotifyTokenEncryptionKey, "hex");
 
 /**
  * Encrypts a Spotify OAuth token before it is stored in MongoDB.
  *
  * Format: v1:<iv_hex>:<auth_tag_hex>:<ciphertext_hex>
+ *
+ * @param token Plain Spotify OAuth token.
+ * @returns Encrypted token payload safe to store in the database.
  */
 export const encryptSpotifyToken = (token: string): string => {
     const iv = crypto.randomBytes(IV_LENGTH_BYTES);
@@ -32,6 +53,10 @@ export const encryptSpotifyToken = (token: string): string => {
 
 /**
  * Decrypts a Spotify OAuth token previously encrypted with encryptSpotifyToken.
+ *
+ * @param encryptedToken Encrypted token payload from the database.
+ * @returns Decrypted Spotify OAuth token.
+ * @throws Error if the encrypted token format is invalid or authentication fails.
  */
 export const decryptSpotifyToken = (encryptedToken: string): string => {
     const [version, ivHex, authTagHex, encryptedHex] = encryptedToken.split(":");
