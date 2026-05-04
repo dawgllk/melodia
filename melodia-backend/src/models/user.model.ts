@@ -44,7 +44,7 @@ const userSchema = new Schema(
         },
 
         /**
-         * Spotify OAuth access token for user-specific Spotify requests.
+         * Encrypted Spotify OAuth access token for user-specific Spotify requests.
          *
          * Stored only on the backend and never returned to the frontend.
          */
@@ -54,7 +54,7 @@ const userSchema = new Schema(
         },
 
         /**
-         * Spotify OAuth refresh token for renewing user-specific access.
+         * Encrypted Spotify OAuth refresh token for renewing user-specific access.
          *
          * Stored only on the backend and never returned to the frontend.
          */
