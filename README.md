@@ -13,12 +13,12 @@ Melodia is a fullstack music application that allows users to discover songs via
 
 ## 🚀 Features Overview
 
-- 🔍 Search songs via the Spotify API
-- 🔐 User authentication with JWT-based login and registration
-- ❤️ Like and manage favorite songs, persisted in MongoDB
-- 🎧 Connect and disconnect a user's Spotify account
-- ✅ Check Spotify connection state from the profile page
-- 🎨 Responsive UI with dynamic state handling
+- Search songs via the Spotify API
+- User authentication with JWT-based login and registration
+- Like and manage favorite songs, persisted in MongoDB
+- Connect and disconnect a user's Spotify account
+- Check Spotify connection state from the profile page
+- Responsive UI with dynamic state handling
 
 ---
 
