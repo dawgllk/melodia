@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import querystring from "querystring";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
 import { User } from "../models/user.model";
 
@@ -17,17 +18,6 @@ type SpotifyTokenResponse = {
 
 const generateRandomString = (length: number): string => {
     return crypto.randomBytes(length).toString("hex").slice(0, length);
-};
-
-const getJwtSecret = (): string | null => {
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-        console.error("JWT_SECRET is missing in environment variables");
-        return null;
-    }
-
-    return jwtSecret;
 };
 
 const getBearerToken = (req: Request): string | null => {
@@ -47,13 +37,6 @@ const getBearerToken = (req: Request): string | null => {
 };
 
 export const loginWithSpotify = (req: Request, res: Response): void => {
-    const jwtSecret = getJwtSecret();
-
-    if (!jwtSecret) {
-        res.status(500).json({ error: "Server configuration error." });
-        return;
-    }
-
     const token = getBearerToken(req);
 
     if (!token) {
@@ -64,7 +47,7 @@ export const loginWithSpotify = (req: Request, res: Response): void => {
     let userId: string;
 
     try {
-        const payload = jwt.verify(token, jwtSecret) as { userId?: string };
+        const payload = jwt.verify(token, env.jwtSecret) as { userId?: string };
 
         if (!payload.userId) {
             res.status(401).json({ error: "Invalid or expired token." });
@@ -84,13 +67,13 @@ export const loginWithSpotify = (req: Request, res: Response): void => {
             userId,
             nonce: generateRandomString(16)
         },
-        jwtSecret,
+        env.jwtSecret,
         {
             expiresIn: "10m"
         }
     );
 
-    console.log("Spotify redirect URI:", process.env.SPOTIFY_REDIRECT_URI);
+    console.log("Spotify redirect URI:", env.spotifyRedirectUri);
 
     const scope = [
         "user-read-private",
@@ -101,9 +84,9 @@ export const loginWithSpotify = (req: Request, res: Response): void => {
 
     const queryParams = querystring.stringify({
         response_type: "code",
-        client_id: process.env.SPOTIFY_CLIENT_ID,
+        client_id: env.spotifyClientId,
         scope,
-        redirect_uri: process.env.SPOTIFY_REDIRECT_URI,
+        redirect_uri: env.spotifyRedirectUri,
         state
     });
 
@@ -116,7 +99,7 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
     const error = req.query.error as string | undefined;
 
     if (error) {
-        res.redirect(`${process.env.FRONTEND_URL}/profile?spotify_error=${error}`);
+        res.redirect(`${env.frontendUrl}/profile?spotify_error=${error}`);
         return;
     }
 
@@ -130,17 +113,10 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
         return;
     }
 
-    const jwtSecret = getJwtSecret();
-
-    if (!jwtSecret) {
-        res.status(500).json({ error: "Server configuration error." });
-        return;
-    }
-
     let spotifyState: SpotifyOAuthState;
 
     try {
-        spotifyState = jwt.verify(state, jwtSecret) as SpotifyOAuthState;
+        spotifyState = jwt.verify(state, env.jwtSecret) as SpotifyOAuthState;
     } catch (error) {
         console.error("Spotify state verification failed:", error);
 
@@ -151,12 +127,12 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
     const body = new URLSearchParams({
         grant_type: "authorization_code",
         code,
-        redirect_uri: process.env.SPOTIFY_REDIRECT_URI as string
+        redirect_uri: env.spotifyRedirectUri
     });
 
-    const authHeader = Buffer.from(
-        `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
-    ).toString("base64");
+    const authHeader = Buffer.from(`${env.spotifyClientId}:${env.spotifyClientSecret}`).toString(
+        "base64"
+    );
 
     const tokenResponse = await fetch("https://accounts.spotify.com/api/token", {
         method: "POST",
@@ -196,7 +172,7 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
         return;
     }
 
-    res.redirect(`${process.env.FRONTEND_URL}/profile?spotify_connected=true`);
+    res.redirect(`${env.frontendUrl}/profile?spotify_connected=true`);
 };
 
 export const getSpotifyStatus = async (

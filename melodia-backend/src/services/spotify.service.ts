@@ -1,3 +1,5 @@
+import { env } from "../config/env";
+
 /**
  * Response returned by Spotify when requesting an access token.
  */
@@ -101,15 +103,10 @@ type SpotifyPlaylistItemsResponse = {
  * @throws Error if the Spotify token request fails.
  */
 const getSpotifyAccessToken = async (): Promise<string> => {
-    const clientId = process.env.SPOTIFY_CLIENT_ID;
-    const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-
-    if (!clientId || !clientSecret) {
-        throw new Error("Spotify credentials are missing in the .env file.");
-    }
-
     // Encode client ID and secret for Basic Auth
-    const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
+    const credentials = Buffer.from(`${env.spotifyClientId}:${env.spotifyClientSecret}`).toString(
+        "base64"
+    );
 
     const response = await fetch("https://accounts.spotify.com/api/token", {
         method: "POST",

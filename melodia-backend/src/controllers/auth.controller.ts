@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { env } from "../config/env";
 import { User } from "../models/user.model";
 import { AuthenticatedRequest } from "../middleware/auth.middleware";
 
@@ -88,24 +89,13 @@ export const registerUser = async (
             passwordHash
         });
 
-        const jwtSecret = process.env.JWT_SECRET;
-
-        if (!jwtSecret) {
-            console.error("JWT_SECRET is missing in environment variables");
-
-            res.status(500).json({
-                error: "Server configuration error."
-            });
-            return;
-        }
-
         // Create a signed token so the user can access protected routes
         const token = jwt.sign(
             {
                 userId: user._id.toString(),
                 email: user.email
             },
-            jwtSecret,
+            env.jwtSecret,
             {
                 expiresIn: "7d"
             }
@@ -176,24 +166,13 @@ export const loginUser = async (
             return;
         }
 
-        const jwtSecret = process.env.JWT_SECRET;
-
-        if (!jwtSecret) {
-            console.error("JWT_SECRET is missing in environment variables");
-
-            res.status(500).json({
-                error: "Server configuration error."
-            });
-            return;
-        }
-
         // Issue a new token after successful authentication
         const token = jwt.sign(
             {
                 userId: user._id.toString(),
                 email: user.email
             },
-            jwtSecret,
+            env.jwtSecret,
             {
                 expiresIn: "7d"
             }
