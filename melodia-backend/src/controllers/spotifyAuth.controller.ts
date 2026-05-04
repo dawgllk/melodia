@@ -7,20 +7,49 @@ import { AuthenticatedRequest } from "../middleware/auth.middleware";
 import { User } from "../models/user.model";
 import { encryptSpotifyToken } from "../services/spotify-token-encryption.service";
 
+/**
+ * Signed state payload sent through Spotify OAuth.
+ *
+ * Links the Spotify callback back to the authenticated Melodia user.
+ */
 type SpotifyOAuthState = {
+    /** Authenticated Melodia user ID. */
     userId: string;
+
+    /** Random value included to make each OAuth state unique. */
     nonce: string;
 };
 
+/**
+ * Token response returned by Spotify's authorization code exchange.
+ */
 type SpotifyTokenResponse = {
+    /** Spotify access token for user-specific API calls. */
     access_token: string;
+
+    /** Spotify refresh token used to renew user-specific access. */
     refresh_token?: string;
 };
 
+/**
+ * Generates a random string used inside the OAuth state payload.
+ *
+ * @param length Number of characters to return.
+ * @returns Random hexadecimal string trimmed to the requested length.
+ */
 const generateRandomString = (length: number): string => {
     return crypto.randomBytes(length).toString("hex").slice(0, length);
 };
 
+/**
+ * Extracts the app JWT from the Authorization header or fallback query param.
+ *
+ * The query param fallback exists for browser redirects that cannot attach
+ * custom Authorization headers.
+ *
+ * @param req Incoming Express request.
+ * @returns JWT string when present, otherwise null.
+ */
 const getBearerToken = (req: Request): string | null => {
     const authHeader = req.headers.authorization;
 
@@ -37,6 +66,16 @@ const getBearerToken = (req: Request): string | null => {
     return null;
 };
 
+/**
+ * Starts the Spotify OAuth login flow for the current Melodia user.
+ *
+ * Verifies the app JWT, signs a short-lived OAuth state containing the user ID,
+ * and redirects the browser to Spotify's authorization page.
+ *
+ * @param req Express request containing the app JWT.
+ * @param res Express response used for errors or Spotify redirect.
+ * @returns void
+ */
 export const loginWithSpotify = (req: Request, res: Response): void => {
     const token = getBearerToken(req);
 
@@ -94,6 +133,17 @@ export const loginWithSpotify = (req: Request, res: Response): void => {
     res.redirect(`https://accounts.spotify.com/authorize?${queryParams}`);
 };
 
+/**
+ * Handles Spotify's OAuth callback.
+ *
+ * Verifies the signed OAuth state, exchanges the authorization code for
+ * Spotify tokens, encrypts those tokens, stores them on the user, and redirects
+ * back to the frontend profile page.
+ *
+ * @param req Express request containing Spotify callback query parameters.
+ * @param res Express response used for errors or frontend redirect.
+ * @returns Promise resolving to void.
+ */
 export const spotifyCallback = async (req: Request, res: Response): Promise<void> => {
     const code = req.query.code as string | undefined;
     const state = req.query.state as string | undefined;
@@ -176,6 +226,16 @@ export const spotifyCallback = async (req: Request, res: Response): Promise<void
     res.redirect(`${env.frontendUrl}/profile?spotify_connected=true`);
 };
 
+/**
+ * Returns whether the authenticated user has Spotify connected.
+ *
+ * Only a boolean connection state is returned; Spotify tokens are never sent to
+ * the frontend.
+ *
+ * @param req Authenticated request containing decoded user data.
+ * @param res Express response containing Spotify connection status or an error.
+ * @returns Promise resolving to void.
+ */
 export const getSpotifyStatus = async (
     req: AuthenticatedRequest,
     res: Response
@@ -203,6 +263,16 @@ export const getSpotifyStatus = async (
     }
 };
 
+/**
+ * Disconnects Spotify for the authenticated user.
+ *
+ * Removes the encrypted Spotify access token, refresh token, and connection
+ * timestamp from the user's database document.
+ *
+ * @param req Authenticated request containing decoded user data.
+ * @param res Express response containing the updated connection status or an error.
+ * @returns Promise resolving to void.
+ */
 export const disconnectSpotify = async (
     req: AuthenticatedRequest,
     res: Response
