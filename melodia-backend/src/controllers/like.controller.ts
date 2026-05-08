@@ -12,6 +12,23 @@ type LikeSongRequestBody = {
 };
 
 /**
+ * Checks whether an unknown error is MongoDB's duplicate key error.
+ *
+ * MongoDB uses error code 11000 when a unique index rejects a write.
+ *
+ * @param error Unknown error thrown during database operations.
+ * @returns True when the error is a duplicate key violation.
+ */
+const isDuplicateKeyError = (error: unknown): error is { code: number } => {
+    return (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        (error as { code?: unknown }).code === 11000
+    );
+};
+
+/**
  * Creates a new liked song entry for the authenticated user.
  *
  * Validates the request, ensures the song is not already liked,
@@ -80,6 +97,13 @@ export const likeSong = async (
             likedSong
         });
     } catch (error) {
+        if (isDuplicateKeyError(error)) {
+            res.status(409).json({
+                error: "Song is already liked."
+            });
+            return;
+        }
+
         // Log unexpected errors during like creation
         console.error("Error in likeSong controller:", error);
 
